@@ -1,0 +1,20 @@
+{
+  "name": "stegnagraphy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vishwas Paikra <vishwaspaikra007@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "jimp": "^0.16.1",
+    "multer": "^1.4.2",
+    "path": "^0.12.7"
+  }
+}

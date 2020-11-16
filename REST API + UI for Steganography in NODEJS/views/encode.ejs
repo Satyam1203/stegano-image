@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steg-encode</title>
+    <script src="/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+    <div id="loading">
+        <img src="/img/loading.gif">
+        <p>Loading</p>
+    </div>
+    <div class="form">
+        <label>
+            Browse File
+            <input type="file" onChange="handleChange('encode', event)" multiple accept="image/*" />
+        </label>
+        <button class="hidden send" onclick="send('encode', event)">Encode</button>
+        <button class="hidden download" onclick="download(event)">Download</button>
+    </div>
+    <div class="selectedImages"></div>
+    <div class="result"></div>
+</body>
+
+<script src="/js/main.js"></script>
+
+</html>

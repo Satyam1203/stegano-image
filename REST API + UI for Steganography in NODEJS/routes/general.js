@@ -24,8 +24,8 @@ steg.encode = (msg, file) => {
                 --data[i]
         })
         image.bitmap.data = Buffer.from(data)
-        await image.writeAsync('./imagesAfterEncoding/' + file.filename + "." + image.getExtension())
-        resolve(file.filename + "." + image.getExtension())
+        await image.writeAsync('./imagesAfterEncoding/' + file.filename + ".png")
+        resolve(file.filename + ".png")
         fs.unlinkSync('./imagesToBeEncoded/' + file.filename)
     })
 

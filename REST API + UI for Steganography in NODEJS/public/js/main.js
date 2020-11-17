@@ -6,6 +6,14 @@ let createCard = (type, value, typeOfCard) => {
     let imgWrap = document.createElement('div')
     imgWrap.classList.add('imgContainer')
 
+    if(type == "src") {
+        let a = document.createElement('a')
+        a.setAttribute('href', value)
+        a.setAttribute('download', value)
+        a.textContent = "Download"
+        imgWrap.append(a)
+    }
+
     if (typeOfCard == "encode") {
         img.setAttribute('onload', 'setTextLimit(this)')
 
@@ -86,7 +94,9 @@ const send = (type, e) => {
     }).then(result => {
 
         let selectedImages = document.querySelector(".result")
-
+        while(selectedImages.lastChild)
+        selectedImages.removeChild(selectedImages.lastChild)
+        
         result.data.map(value => {
             if(type == "encode") {
                 let imgWrap = createCard("src", value)

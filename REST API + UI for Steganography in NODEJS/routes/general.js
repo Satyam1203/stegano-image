@@ -1,4 +1,5 @@
 const jimp = require('jimp')
+const fs = require('fs')
 
 let steg = {}
 
@@ -14,7 +15,7 @@ steg.encode = (msg, file) => {
                 binaryString = "0" + binaryString
             charBinaryArray.push(...binaryString.split(""))
         })
-        charBinaryArray.push(...['1', '0', '0', '0', '0', '1', '1'])
+        charBinaryArray.push(...['0', '0', '0', '0', '0', '1', '1'])
 
         charBinaryArray.map((bit, i) => {
             if (bit == "1")
@@ -23,8 +24,9 @@ steg.encode = (msg, file) => {
                 --data[i]
         })
         image.bitmap.data = Buffer.from(data)
-        let someData = await image.writeAsync('./imagesAfterEncoding/' + file.filename)
-        resolve(file.filename)
+        await image.writeAsync('./imagesAfterEncoding/' + file.filename + "." + image.getExtension())
+        resolve(file.filename + "." + image.getExtension())
+        fs.unlinkSync('./imagesToBeEncoded/' + file.filename)
     })
 
 
@@ -40,13 +42,14 @@ steg.decode = (file) => {
         for (let bit of data) {
             char += bit & 1
             if (char.length == 7) {
-                if (char == "1000011")
+                if (char == "0000011")
                     break
                 msg += String.fromCharCode(parseInt(char, 2))
                 char = ""
             }
         }
         resolve(msg)
+        fs.unlinkSync('./imagesToBeDecoded/' + file.filename)
     })
 
 }

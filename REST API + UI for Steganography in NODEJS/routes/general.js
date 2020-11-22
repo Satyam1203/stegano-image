@@ -1,4 +1,5 @@
 const jimp = require('jimp')
+const fs = require('fs')
 
 let steg = {}
 
@@ -14,7 +15,7 @@ steg.encode = (msg, file) => {
                 binaryString = "0" + binaryString
             charBinaryArray.push(...binaryString.split(""))
         })
-        charBinaryArray.push(...['1', '0', '0', '0', '0', '1', '1'])
+        charBinaryArray.push(...['0', '0', '0', '0', '0', '1', '1'])
 
         charBinaryArray.map((bit, i) => {
             if (bit == "1")
@@ -23,12 +24,51 @@ steg.encode = (msg, file) => {
                 --data[i]
         })
         image.bitmap.data = Buffer.from(data)
-        let someData = await image.writeAsync('./imagesAfterEncoding/' + file.filename)
-        resolve(file.filename)
+        await image.writeAsync('./imagesAfterEncoding/' + file.filename + ".png")
+        resolve(file.filename + ".png")
+        fs.unlinkSync('./imagesToBeEncoded/' + file.filename)
     })
-
-
 }
+
+steg.hideImage = (file1, file2) => {
+    return new Promise(async (resolve, reject) => {
+
+        let parentImage = await jimp.read('./imagesToBeEncoded/' + file1.filename)
+        let data1 = parentImage.bitmap.data.toJSON().data
+        let imageToBeHidden = await jimp.read('./imagesToBeEncoded/' + file2.filename)
+        let data2 = imageToBeHidden.bitmap.data.toJSON().data
+
+        data2.map((px, idx) => {
+            let hideMSBBinary = px.toString(2)
+            while(8 - hideMSBBinary.length)
+                hideMSBBinary = "0" + hideMSBBinary
+            hideMSBBinary = hideMSBBinary.slice(0,4);
+
+            data1[idx] = data1[idx].toString(2);
+            while(8 - data1[idx].length)
+                data1[idx] = "0" + data1[idx]
+
+            data1[idx] = data1[idx].slice(0,4) + hideMSBBinary;
+            data1[idx] = parseInt(data1[idx], 2);
+        })
+
+        let diff = data1.length - data2.length;
+        while(diff--) {
+            let i = data1.length - diff;
+            data1[i] = parseInt(data1[i]).toString(2)
+            while(8 - data1[i].length)
+                data1[i] = "0" + data1[i]
+
+            data1[i] = parseInt((data1[i].slice(0,4) + '0000'), 2);
+        }
+
+        parentImage.bitmap.data = Buffer.from(data1)
+        await parentImage.writeAsync('./imagesAfterEncoding/' + file1.filename + ".png")
+        resolve(file1.filename + ".png")
+        fs.unlinkSync('./imagesToBeEncoded/' + file1.filename)
+    })
+}
+
 
 steg.retrieveImage = (file) => {
 
@@ -53,6 +93,7 @@ steg.retrieveImage = (file) => {
 
 }
 
+
 steg.decode = (file) => {
     return new Promise(async (resolve, reject) => {
         let image = await jimp.read('./imagesToBeDecoded/' + file.filename)
@@ -63,13 +104,14 @@ steg.decode = (file) => {
         for (let bit of data) {
             char += bit & 1
             if (char.length == 7) {
-                if (char == "1000011")
+                if (char == "0000011")
                     break
                 msg += String.fromCharCode(parseInt(char, 2))
                 char = ""
             }
         }
         resolve(msg)
+        fs.unlinkSync('./imagesToBeDecoded/' + file.filename)
     })
 
 }

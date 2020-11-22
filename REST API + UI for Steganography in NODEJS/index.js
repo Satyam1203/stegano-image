@@ -4,6 +4,7 @@ const path = require('path')
 
 app.use(express.static(path.join(__dirname, 'node_modules/axios')));
 app.use(express.static(path.join(__dirname, 'imagesAfterEncoding')));
+app.use(express.static(path.join(__dirname, 'imagesAfterDecoding')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const main = require('./routes/main')
@@ -20,6 +21,14 @@ app.get('/steg-encode', (req, res) => {
 
 app.get('/steg-decode', (req, res) => {
     res.render('decode.ejs')
+})
+
+app.get('/encode-image', (req, res) => {
+    res.render('encode-image.ejs')
+})
+
+app.get('/decode-image', (req, res) => {
+    res.render('decode-image.ejs')
 })
 
 const PORT = process.env.PORT || 3000

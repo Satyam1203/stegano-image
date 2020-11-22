@@ -17,6 +17,28 @@ router.post('/steg-encode', imagesToBeEncoded.array('files'), (req, res) => {
 
 })
 
+router.post('/steg-encode-image', imagesToBeEncoded.array('files'), (req, res) => {
+
+    let promises = []
+    // console.log(req.files);
+    promises.push(steg.hideImage(req.files[0], req.files[1]));
+    Promise.all(promises).then(urls => {
+        res.send(urls)
+    })
+
+})
+
+router.post('/steg-decode-image', imagesToBeDecoded.array('files'), (req, res) => {
+
+    let promises = []
+    // console.log(req.files);
+    promises.push(steg.retrieveImage(req.files[0]));
+    Promise.all(promises).then(urls => {
+        res.send(urls)
+    })
+
+})
+
 router.post('/steg-decode', imagesToBeDecoded.array("files"), (req, res) => {
     let promises = []
     req.files.map(async file => {

@@ -42,8 +42,15 @@ const delay = (type, file) => {
     })
 }
 
-const handleChange = async (type, e) => {
+const handleChange = async (type, e, image) => {
 
+    if(image){
+        if(filesToBesteganographed.length == 2) return;
+        if(filesToBesteganographed.length == 1 && (filesToBesteganographed[0].size - e.target.files[0].size) <= 0) {
+            alert("Image 2 appears to be larger than image 1. Try another")
+            return;
+        }
+    }
     let form = document.querySelector(".form")
     form.classList.add("activeForm")
     let selectedImages = document.querySelector(".selectedImages")
@@ -86,9 +93,51 @@ const send = (type, e) => {
     }).then(result => {
 
         let selectedImages = document.querySelector(".result")
-
+        while(selectedImages.lastChild)
+        selectedImages.removeChild(selectedImages.lastChild)
+        
         result.data.map(value => {
             if(type == "encode") {
+                let imgWrap = createCard("src", value)
+                selectedImages.append(imgWrap)
+            } else {
+                let p = document.createElement('p')
+                p.textContent = value
+                selectedImages.append(p)
+            }
+            loading.style.display = "none"
+        })
+
+    })
+}
+
+const sendImage = (type, e, decodeImage) => {
+    let loading = document.querySelector('#loading')
+    loading.style.display = "flex"
+    let formData = new FormData()
+
+    filesToBesteganographed.map(file => {
+        formData.append("files", file)
+    })
+
+    axios({
+        method: "POST",
+        url: type == "encode" ? "/steg-encode-image" : "/steg-decode-image",
+        data: formData,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    }).then(result => {
+        console.log(result)
+        let selectedImages = document.querySelector(".result")
+        while(selectedImages.lastChild)
+        selectedImages.removeChild(selectedImages.lastChild)
+        
+        result.data.map(value => {
+            if(type == "encode") {
+                let imgWrap = createCard("src", value)
+                selectedImages.append(imgWrap)
+            } else if(decodeImage){
                 let imgWrap = createCard("src", value)
                 selectedImages.append(imgWrap)
             } else {

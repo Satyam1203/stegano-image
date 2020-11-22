@@ -30,6 +30,29 @@ steg.encode = (msg, file) => {
 
 }
 
+steg.retrieveImage = (file) => {
+
+    return new Promise(async (resolve, reject) => {
+        let image = await jimp.read('./imagesToBeDecoded/' + file.filename)
+        let data = image.bitmap.data.toJSON().data
+
+        // console.log(data)
+
+        data.map((px,idx) => {
+            let getMSB = px.toString(2)
+            while(8 - getMSB.length)
+                getMSB = "0" + getMSB
+            getMSB = getMSB.slice(4) + '0000';
+            data[idx] = parseInt(getMSB, 2)
+        })
+
+        image.bitmap.data = Buffer.from(data)
+        await image.writeAsync('./imagesAfterDecoding/' + file.filename + ".png")
+        resolve(file.filename + ".png")
+    })
+
+}
+
 steg.decode = (file) => {
     return new Promise(async (resolve, reject) => {
         let image = await jimp.read('./imagesToBeDecoded/' + file.filename)

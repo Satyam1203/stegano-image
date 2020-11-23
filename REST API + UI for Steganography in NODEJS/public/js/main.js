@@ -45,8 +45,9 @@ const delay = (type, file) => {
 const handleChange = async (type, e, image) => {
 
     if(image){
+        
         if(filesToBesteganographed.length == 2) return;
-        if(filesToBesteganographed.length == 1 && (filesToBesteganographed[0].size - e.target.files[0].size) <= 0) {
+        if(filesToBesteganographed.length == 1 && (filesToBesteganographed[0].size - e.target.files[0].size) <= 4) {
             alert("Image 2 appears to be larger than image 1. Try another")
             return;
         }

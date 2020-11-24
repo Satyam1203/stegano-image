@@ -22,8 +22,8 @@ router.post('/steg-encode-image', imagesToBeEncoded.array('files'), (req, res) =
     let promises = []
     // console.log(req.files);
     promises.push(steg.hideImage(req.files[0], req.files[1]));
-    Promise.all(promises).then(urls => {
-        res.send(urls)
+    Promise.all(promises).then(result => {
+            res.send(result)
     })
 
 })

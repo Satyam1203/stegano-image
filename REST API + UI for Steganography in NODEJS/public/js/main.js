@@ -44,14 +44,14 @@ const delay = (type, file) => {
 
 const handleChange = async (type, e, image) => {
 
-    if(image){
+    // if(image){
         
-        if(filesToBesteganographed.length == 2) return;
-        if(filesToBesteganographed.length == 1 && (filesToBesteganographed[0].size - e.target.files[0].size) <= 4) {
-            alert("Image 2 appears to be larger than image 1. Try another")
-            return;
-        }
-    }
+    //     if(filesToBesteganographed.length == 2) return;
+    //     if(filesToBesteganographed.length == 1 && (filesToBesteganographed[0].size - e.target.files[0].size) <= 4) {
+    //         alert("Image 2 appears to be larger than image 1. Try another")
+    //         return;
+    //     }
+    // }
     let form = document.querySelector(".form")
     form.classList.add("activeForm")
     let selectedImages = document.querySelector(".selectedImages")
@@ -134,18 +134,23 @@ const sendImage = (type, e, decodeImage) => {
         while(selectedImages.lastChild)
         selectedImages.removeChild(selectedImages.lastChild)
         
-        result.data.map(value => {
-            if(type == "encode") {
-                let imgWrap = createCard("src", value)
-                selectedImages.append(imgWrap)
-            } else if(decodeImage){
-                let imgWrap = createCard("src", value)
-                selectedImages.append(imgWrap)
+        result.data.map(result => {
+            if(result.status == "success") {
+                if(type == "encode") {
+                    let imgWrap = createCard("src", result.url)
+                    selectedImages.append(imgWrap)
+                } else if(decodeImage){
+                    let imgWrap = createCard("src", result.url)
+                    selectedImages.append(imgWrap)
+                } else {
+                    let p = document.createElement('p')
+                    p.textContent = value
+                    selectedImages.append(p)
+                }
             } else {
-                let p = document.createElement('p')
-                p.textContent = value
-                selectedImages.append(p)
+                alert(result.msg)
             }
+            
             loading.style.display = "none"
         })
 

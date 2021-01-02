@@ -1,5 +1,10 @@
 node_modules
 imagesAfterEncoding
+<<<<<<< HEAD
 imagesAfterDecoding
 imagesToBeEncoded
 imagesToBeDecoded
+=======
+imagesToBeEncoded
+imagesToBeDecoded
+>>>>>>> REST_API_and_UI_for_steganography_in_NODEJS

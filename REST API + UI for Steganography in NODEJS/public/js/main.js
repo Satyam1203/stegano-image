@@ -6,6 +6,14 @@ let createCard = (type, value, typeOfCard) => {
     let imgWrap = document.createElement('div')
     imgWrap.classList.add('imgContainer')
 
+    if(type == "src") {
+        let a = document.createElement('a')
+        a.setAttribute('href', value)
+        a.setAttribute('download', value)
+        a.textContent = "Download"
+        imgWrap.append(a)
+    }
+
     if (typeOfCard == "encode") {
         img.setAttribute('onload', 'setTextLimit(this)')
 

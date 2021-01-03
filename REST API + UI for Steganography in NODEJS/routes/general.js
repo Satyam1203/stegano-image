@@ -1,7 +1,10 @@
 const jimp = require('jimp')
 const fs = require('fs')
+const { encodeVideo } = require('./encode-video')
 
 let steg = {}
+
+steg.encodeVideo = encodeVideo
 
 steg.encode = (msg, file) => {
     return new Promise(async (resolve, reject) => {

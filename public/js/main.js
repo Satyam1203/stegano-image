@@ -6,11 +6,11 @@ let createCard = (type, value, typeOfCard) => {
     let imgWrap = document.createElement('div')
     imgWrap.classList.add('imgContainer')
 
-    if(type == "src") {
+    if (type == "src") {
         let a = document.createElement('a')
+        a.classList.add('steganoImage')
         a.setAttribute('href', value)
         a.setAttribute('download', value)
-        a.textContent = "Download"
         imgWrap.append(a)
     }
 
@@ -53,25 +53,26 @@ const delay = (type, file) => {
 const handleChange = async (type, e, image) => {
 
     // if(image){
-        
+
     //     if(filesToBesteganographed.length == 2) return;
     //     if(filesToBesteganographed.length == 1 && (filesToBesteganographed[0].size - e.target.files[0].size) <= 4) {
     //         alert("Image 2 appears to be larger than image 1. Try another")
     //         return;
     //     }
     // }
-    let form = document.querySelector(".form")
-    form.classList.add("activeForm")
     let selectedImages = document.querySelector(".selectedImages")
-    let sendBtn = document.querySelector(".send")
-
+    let cursor = selectedImages.lastChild
+    if (cursor)
+        cursor.scrollIntoView()
     filesToBesteganographed.push(...e.target.files)
 
     for (let file of e.target.files)
         await delay(type, file)
 
-    selectedImages.scrollTo(0, 0)
-    sendBtn.classList.remove("hidden")
+    if (cursor)
+        cursor.scrollIntoView()
+    else
+        selectedImages.scrollTo(0, 0)
 
 }
 
@@ -102,11 +103,19 @@ const send = (type, e) => {
     }).then(result => {
 
         let selectedImages = document.querySelector(".result")
-        while(selectedImages.lastChild)
-        selectedImages.removeChild(selectedImages.lastChild)
-        
+        while (selectedImages.lastChild)
+            selectedImages.removeChild(selectedImages.lastChild)
+        if (type == "encode") {
+            let downloadAll = document.querySelector('.download')
+            if(downloadAll)
+                document.querySelectorAll('.encode')[1].removeChild(downloadAll)
+            let div = document.createElement("div")
+            div.classList.add('download')
+            div.setAttribute('onclick', 'downloadAll()')
+            document.querySelectorAll(".encode")[1].prepend(div)
+        }
         result.data.map(value => {
-            if(type == "encode") {
+            if (type == "encode") {
                 let imgWrap = createCard("src", value)
                 selectedImages.append(imgWrap)
             } else {
@@ -139,15 +148,15 @@ const sendImage = (type, e, decodeImage) => {
     }).then(result => {
         console.log(result)
         let selectedImages = document.querySelector(".result")
-        while(selectedImages.lastChild)
-        selectedImages.removeChild(selectedImages.lastChild)
-        
+        while (selectedImages.lastChild)
+            selectedImages.removeChild(selectedImages.lastChild)
+
         result.data.map(result => {
-            if(result.status == "success") {
-                if(type == "encode") {
+            if (result.status == "success") {
+                if (type == "encode") {
                     let imgWrap = createCard("src", result.url)
                     selectedImages.append(imgWrap)
-                } else if(decodeImage){
+                } else if (decodeImage) {
                     let imgWrap = createCard("src", result.url)
                     selectedImages.append(imgWrap)
                 } else {
@@ -158,7 +167,7 @@ const sendImage = (type, e, decodeImage) => {
             } else {
                 alert(result.msg)
             }
-            
+
             loading.style.display = "none"
         })
 
@@ -166,10 +175,17 @@ const sendImage = (type, e, decodeImage) => {
 }
 
 const setTextLimit = (ths) => {
-    ths.parentElement.lastChild.maxLength = Math.floor(ths.naturalWidth*ths.naturalHeight*4/7)-2
+    ths.parentElement.lastChild.maxLength = Math.floor(ths.naturalWidth * ths.naturalHeight * 4 / 7) - 2
 }
 
 const calc = (ths) => {
     let totCharLeft = ths.maxLength - ths.value.length
     ths.parentElement.children[0].textContent = totCharLeft
+}
+
+downloadAll = () => {
+    let images = document.querySelectorAll('.steganoImage')
+    images.forEach(image => {
+        image.click()
+    })
 }

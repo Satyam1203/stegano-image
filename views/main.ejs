@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/ejs.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/dist/axios.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steganography</title>
+</head>
+<body>
+    <div class="wrap">
+        <div class="sidePanel">
+            <div class="list">Text to Image</div>
+            <div class="list">Text from Image</div>
+            <div class="list">Image to Image</div>
+            <div class="list">Image from Image</div>
+            <div class="list">Image to Video</div>
+            <div class="list">Image from Video</div>
+        </div>
+        <div class="mainContent">
+            <div class="content"><%- include('encode.ejs'); %></div>
+            <!-- <div class="content"><%- include('decode.ejs'); %></div> -->
+            <div class="content"></div>
+            <div class="content"></div>
+            <div class="content"></div>
+            <div class="content"></div>
+        </div>
+    </div>
+<script src="/js/main.js"></script>
+</body>
+</html>

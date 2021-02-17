@@ -36,6 +36,10 @@ app.get('/encode-video', (req, res) => {
     res.render('encode-video.ejs')
 })
 
+app.get('/', (req, res) => {
+    res.render('main.ejs')
+})
+
 // app.get('/decode-video', (req, res) => {
 //     res.render('decode-image.ejs')
 // })

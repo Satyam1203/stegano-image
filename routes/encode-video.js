@@ -149,9 +149,12 @@ const encodeVideo = (video, image) => {
             if (image) {
                 console.log('encoding')
 
-                // await exec(`ffmpeg -start_number 1 -i frames/${path}/raw-frames/%d.png -vcodec ${videoEncoder} -profile:v high444 -refs 16 -crf 0 -preset ultrafast frames/${path}/${video.filename}`)
+                // await exec(`ffmpeg -start_number 1 -i frames/${path}/raw-frames/%d.png -vcodec ${videoEncoder} -profile:v high444 -refs 1 -crf 0 -preset ultrafast frames/${path}/${video.filename}`)
+                await exec(`ffmpeg -start_number 1 -i frames/${path}/raw-frames/%d.png -vcodec ${videoEncoder} -profile:v high444 -refs 1 -crf 0 frames/${path}/${video.filename}`)
 
-                await exec(`ffmpeg -start_number 1 -i frames/${path}/raw-frames/%d.png -vcodec ${videoEncoder} -profile:v high444 -crf 0 frames/${path}/${video.filename}`)
+                // await exec(`ffmpeg -start_number 1 -i frames/${path}/raw-frames/%d.png -vcodec ${videoEncoder} -profile:v high444 -crf 0 frames/${path}/${video.filename}`)
+
+                // await exec(`ffmpeg -start_number 1 -i frames/${path}/raw-frames/%d.png -c:v libx264 -qp 0 -f mp4 frames/${path}/${video.filename}`)
 
                 t2 = Date.now()
                 console.log((t2 - t1) / (1000 * 60), "minutes")

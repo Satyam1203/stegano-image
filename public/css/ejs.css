@@ -1,17 +1,22 @@
 * {
     box-sizing: border-box;
 }
-.encode {
+.content {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.encode, .decode {
     height: 200px;
     display: grid;
     grid-template-columns: 200px auto 200px;
 }
-.encode:last-child {
+.encode:last-child, .decode:last-child {
     margin-top: 10px;
-    grid-template-columns: 200px auto;
 }
-
-.encode label, .encode .send, .encode .download {
+.encode label, .encode .send, .encode .download, .encode .icon,
+.decode label, .decode .send, .decode .download, .decode .icon {
     height: 200px;
     background-image: url('/img/image.png');
     background-color: #36444b;
@@ -19,35 +24,46 @@
     text-align: center;
     justify-content: center;
     display: flex;
+    background-position: center;
 }
-.encode .download::after {
+.encode label:active, .encode .send:active, .encode .download:active,
+.decode label:active, .decode .send:active, .decode .download:active {
+    background-size: 90% 90%;
+}
+.encode .download::after,
+.decode .download::after {
     content: "Download All";
     padding: 5px;
     background-color: #ffffffbf;
     margin: auto;
     border-radius: 5px;
 }
-.encode .send {
+.encode .send, .decode .send {
     background-image: url('/img/send.png');
     background-size: 80% 80%;
     background-repeat: no-repeat;
     background-position: center;
 }
-.encode .download {
+.encode .download, .decode .download {
     width: 200px;
     background-image: url('/img/download.jpg');
     background-size: 80% 80%;
     background-repeat: no-repeat;
     background-position: center;
 }
-.encode label input {
+.encode .icon, .decode .icon {
+    background-image: url('/img/binary.png');
+    border: 20px solid #36444b;
+    background-size: cover;
+}
+.encode label input, .decode label input {
     display: none;
 }
-.encode span {
+.encode span, .decode span {
     padding: 5px;
     background-color: #ffffffbf;
     margin: auto;
-    border-radius: 5px;
+    border-radius: 5px; 
 }
 .selectedImages, .result {
     display: grid;
@@ -58,7 +74,12 @@
     z-index: 0;
     overflow-x: auto;
     scroll-behavior: smooth;
+    min-width: 10px;
 }   
+.selectedImages::after, .result::after {
+    content: "";
+    width: 1px;
+}
 
 .result a {
     width: 50px;
@@ -164,4 +185,12 @@
     100% {
         transform: scale(1);
     }
+}
+p {
+    margin: 10px;
+    overflow: auto;
+    text-align: center;
+    width: 180px;
+    border: 1px solid;
+    padding: 10px;
 }

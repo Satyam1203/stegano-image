@@ -17,6 +17,9 @@
     background-image: url('/img/bg.jpg');
     padding-top: 200px;
 }
+.sidePanel .active {
+    border: 2px solid white;
+}
 .list {
     padding: 10px;
     color: white;
@@ -28,4 +31,12 @@
 }
 .list:hover {
     border: 2px solid white;
+}
+.list:active {
+    transform: scale(0.96);
+}
+.mainContent {
+    height: 100vh;
+    overflow: hidden;
+    scroll-behavior: smooth;
 }

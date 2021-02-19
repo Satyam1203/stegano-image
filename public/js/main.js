@@ -1,6 +1,6 @@
 let createCard = (type, value, typeOfCard) => {
     let img = document.createElement('img')
-    img.setAttribute('src', type == "src" ? value : URL.createObjectURL(value))
+    img.setAttribute('src', type == 'src' ? value : URL.createObjectURL(value))
     img.classList.add('img')
 
     let imgWrap = document.createElement('div')
@@ -37,14 +37,29 @@ let createCard = (type, value, typeOfCard) => {
 }
 
 let filesToBesteganographed = []
+let messageFromImageFiles = []
 
 const delay = (type, file) => {
     return new Promise((resolve, reject) => {
         setTimeout((file) => {
-            let selectedImages = document.querySelector(".selectedImages")
-            let imgWrap = createCard("file", file, type)
-            selectedImages.append(imgWrap)
-            imgWrap.scrollIntoView()
+            if (type === 'src') {
+                let result = document.querySelector(".result")
+                let imgWrap = createCard(type, file)
+                result.append(imgWrap)
+                let img = document.querySelectorAll(".result .img")
+                result.scrollTo(img.length * 200, 0)
+            } else {
+                let selectedImages
+                if (type == 'decode') {
+                    selectedImages = document.querySelector(".decode .selectedImages")
+                } else {
+                    selectedImages = document.querySelector(".encode .selectedImages")
+                }
+                let imgWrap = createCard("file", file, type)
+                selectedImages.append(imgWrap)
+                let img = selectedImages.querySelectorAll(".img")
+                selectedImages.scrollTo(img.length * 200, 0)
+            }
             resolve()
         }, 200, file);
     })
@@ -60,23 +75,34 @@ const handleChange = async (type, e, image) => {
     //         return;
     //     }
     // }
-    let selectedImages = document.querySelector(".selectedImages")
-    let cursor = selectedImages.lastChild
-    if (cursor)
-        cursor.scrollIntoView()
-    filesToBesteganographed.push(...e.target.files)
+    let selectedImages
+    if (type == 'decode') {
+        selectedImages = document.querySelector(".decode .selectedImages")
+        messageFromImageFiles.push(...e.target.files)
+    } else {
+        selectedImages = document.querySelector(".encode .selectedImages")
+        filesToBesteganographed.push(...e.target.files)
+    }
+    let cursor = selectedImages.scrollLeft
+   
 
     for (let file of e.target.files)
         await delay(type, file)
 
-    if (cursor)
-        cursor.scrollIntoView()
-    else
+    setTimeout(() => {
         selectedImages.scrollTo(0, 0)
+        if (cursor)
+            selectedImages.scrollTo(cursor, 0)
+    }, 400);
 
 }
 
 const send = (type, e) => {
+    if ((type == 'encode' && !filesToBesteganographed.length) ||
+    (type == 'encode' && !messageFromImageFiles.length)) {
+        alert("No image is selected")
+        return
+    }
     let loading = document.querySelector('#loading')
     loading.style.display = "flex"
     let formData = new FormData()
@@ -87,11 +113,16 @@ const send = (type, e) => {
             .forEach(msg => messages.push(msg.value))
 
         formData.append("messages", messages)
+        filesToBesteganographed.map(file => {
+            formData.append("files", file)
+        })
+    } else {
+        messageFromImageFiles.map(file => {
+            formData.append("files", file)
+        })
     }
 
-    filesToBesteganographed.map(file => {
-        formData.append("files", file)
-    })
+    
 
     axios({
         method: "POST",
@@ -100,28 +131,38 @@ const send = (type, e) => {
         headers: {
             "Content-Type": "multipart/form-data"
         }
-    }).then(result => {
+    }).then(URLs => {
 
-        let selectedImages = document.querySelector(".result")
-        while (selectedImages.lastChild)
-            selectedImages.removeChild(selectedImages.lastChild)
-        if (type == "encode") {
-            let downloadAll = document.querySelector('.download')
-            if(downloadAll)
-                document.querySelectorAll('.encode')[1].removeChild(downloadAll)
-            let div = document.createElement("div")
-            div.classList.add('download')
-            div.setAttribute('onclick', 'downloadAll()')
-            document.querySelectorAll(".encode")[1].prepend(div)
+        let result
+        if (type == 'decode') {
+            result = document.querySelector(".decode .result")
+        } else {
+            result = document.querySelector(".encode .result")
         }
-        result.data.map(value => {
+        while (result.lastChild)
+            result.removeChild(result.lastChild)
+        // if (type == "encode") {
+        //     let downloadAll = document.querySelector('.download')
+        //     if (downloadAll)
+        //         document.querySelectorAll('.encode')[1].removeChild(downloadAll)
+        //     let div = document.createElement("div")
+        //     div.classList.add('download')
+        //     div.setAttribute('onclick', 'downloadAll()')
+        //     document.querySelectorAll(".encode")[1].prepend(div)
+        // }
+        URLs.data.map(async value => {
             if (type == "encode") {
-                let imgWrap = createCard("src", value)
-                selectedImages.append(imgWrap)
+                // let imgWrap = createCard("src", value)
+                // result.append(imgWrap)
+                let cursor = result.scrollLeft
+                await delay('src', value)
+                setTimeout(() => {
+                    result.scrollTo(cursor, 0)
+                }, 500);
             } else {
                 let p = document.createElement('p')
                 p.textContent = value
-                selectedImages.append(p)
+                result.append(p)
             }
             loading.style.display = "none"
         })
@@ -185,7 +226,21 @@ const calc = (ths) => {
 
 downloadAll = () => {
     let images = document.querySelectorAll('.steganoImage')
+    if (!images.length) {
+        alert("No images to download")
+        return
+    }
     images.forEach(image => {
         image.click()
     })
+}
+
+route = (ths, page) => {
+    let lists = document.querySelectorAll('.list')
+    lists.forEach(ele => {
+        ele.classList.remove('active')
+    })
+    ths.classList.add('active')
+    let mainContent = document.querySelector('.mainContent')
+    mainContent.scrollTo(0, mainContent.clientHeight * page)
 }

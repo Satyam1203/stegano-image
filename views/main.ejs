@@ -11,16 +11,16 @@
 <body>
     <div class="wrap">
         <div class="sidePanel">
-            <div class="list">Text to Image</div>
-            <div class="list">Text from Image</div>
-            <div class="list">Image to Image</div>
-            <div class="list">Image from Image</div>
-            <div class="list">Image to Video</div>
-            <div class="list">Image from Video</div>
+            <div onclick="route(this, 0)" class="list active">Text to Image</div>
+            <div onclick="route(this, 1)" class="list">Text from Image</div>
+            <div onclick="route(this, 2)" class="list">Image to Image</div>
+            <div onclick="route(this, 3)" class="list">Image from Image</div>
+            <div onclick="route(this, 4)" class="list">Image to Video</div>
+            <div onclick="route(this, 5)" class="list">Image from Video</div>
         </div>
         <div class="mainContent">
             <div class="content"><%- include('encode.ejs'); %></div>
-            <!-- <div class="content"><%- include('decode.ejs'); %></div> -->
+            <div class="content"><%- include('decode.ejs'); %></div>
             <div class="content"></div>
             <div class="content"></div>
             <div class="content"></div>

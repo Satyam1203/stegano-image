@@ -3,14 +3,19 @@
         <img src="/img/loading.gif">
         <p>Loading</p>
     </div>
-    <div class="form">
+    <div class="decode">
         <label>
-            Browse File
+            <span>Insert image</span>
             <input type="file" onChange="handleChange('decode', event)" multiple accept="image/*" />
         </label>
-        <button class="hidden send" onclick="send('decode', event)">Decode</button>
-        <button class="hidden download" onclick="download(event)">Download</button>
+        <div class="selectedImages"></div>
+        <div class="send" onclick="send('decode', event)">
+            <span>Decode image</span>
+        </div>
     </div>
-    <div class="selectedImages"></div>
-    <div class="result para"></div>
+    <div class="decode">
+        <div class="download"></div>
+        <div class="result"></div>
+        <div class="icon"></div>
+    </div>
 </div>

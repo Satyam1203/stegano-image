@@ -99,7 +99,7 @@ const handleChange = async (type, e, image) => {
 
 const send = (type, e) => {
     if ((type == 'encode' && !filesToBesteganographed.length) ||
-    (type == 'encode' && !messageFromImageFiles.length)) {
+    (type == 'decode' && !messageFromImageFiles.length)) {
         alert("No image is selected")
         return
     }

@@ -1,0 +1,21 @@
+<div class="contentWrap">
+    <h1>IMAGE FROM VIDEO</h2>
+    <div id="loading">
+        <img src="/img/loading.gif">
+        <p>Loading</p>
+    </div>
+    <div class="video decode-video">
+        <label>
+            <span>Insert Video</span>
+            <input type="file" onChange="handleVideo('decode-video', event, 1)" accept="video/*" />
+            <video controls autoplay></video>
+            <button onclick="removeVideo(event, 'decode')"></button>
+        </label>
+        <div class="send" onclick="sendVideo('decode', event)">
+            <span>Decode Video</span>
+        </div>
+        <label>
+            <img src="/img/send.png"/>
+        </label>
+    </div>
+</div>

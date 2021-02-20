@@ -40,3 +40,6 @@
     overflow: hidden;
     scroll-behavior: smooth;
 }
+.contentWrap h1 {
+    text-align: center;
+}

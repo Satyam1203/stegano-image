@@ -1,41 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steg-encode</title>
-    <script src="/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="/css/main.css">
-</head>
-
-<body>
+<div class="contentWrap">
+    <h1>IMAGE TO VIDEO</h2>
     <div id="loading">
         <img src="/img/loading.gif">
         <p>Loading</p>
     </div>
-    <div class="form">
+    <div class="video">
         <label>
-            Browse File
-            <input type="file" onChange="handleChange('video', event, 1)" accept="video/*" />
+            <span>Insert Video</span>
+            <input type="file" onChange="handleVideo('video', event, 1)" accept="video/*" />
+            <video controls autoplay></video>
+            <button onclick="removeVideo(event)"></button>
         </label>
         <label>
-            Browse File
-            <input type="file" onChange="handleChange('image', event, 1)" accept="image/*" />
+            <span>Insert image</span>
+            <input type="file" onChange="handleVideo('image', event, 1)" accept="image/*" />
+            <img />
         </label>
-        <button class=" send" onclick="send('encode', event)">Encode Image</button>
-        <button class="hidden download" onclick="download(event)">Download</button>
+        <div class="send" onclick="sendVideo('encode', event)">
+            <span>Encode Video</span>
+        </div>
+        <label>
+            <video class="result" controls autoplay></video>
+        </label>
     </div>
-    <div class="selectedImages">
-        <div class="video"></div>
-        <div class="image"></div>
-    </div>
-    <div class="result">
-        <video width="320" height="240" controls></video>
-        <img src="" width="400" height="400px" />
-    </div>
-</body>
-
-<script src="/js/video.js"></script>
-
-</html>
+</div>

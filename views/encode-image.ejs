@@ -1,35 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steg-encode</title>
-    <script src="/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="/css/main.css">
-</head>
-
-<body>
-    <div id="loading">
-        <img src="/img/loading.gif">
-        <p>Loading</p>
-    </div>
-    <div class="form">
-        <label>
-            Browse File
-            <input type="file" onChange="handleChange('encode-image', event, 1)" accept="image/*" />
-        </label>
-        <label>
-            Browse File
-            <input type="file" onChange="handleChange('encode-image', event, 1)" accept="image/*" />
-        </label>
-        <button class="hidden send" onclick="sendImage('encode', event)">Encode Image</button>
-        <button class="hidden download" onclick="download(event)">Download</button>
-    </div>
+<div class="contentWrap">
+  <div id="loading">
+    <img src="/img/loading.gif" />
+    <p>Loading</p>
+  </div>
+  <div class="encode encode-image">
+    <label>
+      <span>Browse Image 1</span>
+      <input
+        id="enc-img-1"
+        type="file"
+        onChange="handleChangeImage('encode', event)"
+        accept="image/*"
+      />
+    </label>
     <div class="selectedImages"></div>
-    <div class="result"></div>
-</body>
-
-<script src="/js/main.js"></script>
-
-</html>
+    <label>
+      <span>Browse Image 2</span>
+      <input
+        id="enc-img-2"
+        type="file"
+        onChange="handleChangeImage('encode', event)"
+        accept="image/*"
+      />
+    </label>
+  </div>
+  <div class="encode">
+    <div class="send" onclick="sendImage('encode', event)">
+      <span>Encode image</span>
+    </div>
+    <div class="result-image"></div>
+    <div class="hidden download" onclick="downloadAll(event)"></div>
+  </div>
+</div>

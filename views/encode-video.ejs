@@ -1,26 +1,26 @@
 <div class="contentWrap">
-    <h1>IMAGE TO VIDEO</h2>
-    <div id="loading">
-        <img src="/img/loading.gif">
-        <p>Loading</p>
-    </div>
-    <div class="video">
-        <label>
-            <span>Insert Video</span>
-            <input type="file" onChange="handleVideo('video', event, 1)" accept="video/*" />
-            <video controls autoplay></video>
-            <button onclick="removeVideo(event)"></button>
-        </label>
-        <label>
-            <span>Insert image</span>
-            <input type="file" onChange="handleVideo('image', event, 1)" accept="image/*" />
-            <img />
-        </label>
-        <div class="send" onclick="sendVideo('encode', event)">
-            <span>Encode Video</span>
-        </div>
-        <label>
-            <video class="result" controls autoplay></video>
-        </label>
-    </div>
+  <h1>IMAGE TO VIDEO</h2>
+  <div id="loading">
+      <img src="/img/loading.gif">
+      <p>Loading</p>
+  </div>
+  <div class="video">
+      <label>
+          <span>Insert Video</span>
+          <input type="file" onChange="handleVideo('video', event, 1)" accept="video/*" />
+          <video controls autoplay></video>
+          <button onclick="removeVideo(event)"></button>
+      </label>
+      <label>
+          <span>Insert image</span>
+          <input type="file" onChange="handleVideo('image', event, 1)" accept="image/*" />
+          <img />
+      </label>
+      <div class="send" onclick="sendVideo('encode', event)">
+          <span>Encode Video</span>
+      </div>
+      <label>
+          <video class="result" controls autoplay></video>
+      </label>
+  </div>
 </div>

@@ -1,31 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Steg-Decode</title>
-    <script src="/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="/css/main.css">
-</head>
-
-<body>
-    <div id="loading">
-        <img src="/img/loading.gif">
-        <p>Loading</p>
-    </div>
-    <div class="form">
-        <label>
-            Browse File
-            <input type="file" onChange="handleChange('decode', event, 1)" accept="image/*" />
-        </label>
-        <button class="hidden send" onclick="sendImage('decode', event, 1)">Decode Image</button>
-        <button class="hidden download" onclick="download(event)">Download</button>
-    </div>
+<div class="contentWrap">
+  <div id="loading">
+    <img src="/img/loading.gif" />
+    <p>Loading</p>
+  </div>
+  <div class="decode decode-image">
+    <label>
+      <span>Insert image</span>
+      <input
+        type="file"
+        onChange="handleChangeImage('decode', event)"
+        accept="image/*"
+      />
+    </label>
     <div class="selectedImages"></div>
-    <div class="result"></div>
-</body>
-
-<script src="/js/main.js"></script>
-
-</html>
+    <div class="send" onclick="sendImage('decode', event, 1)">
+      <span>Decode image</span>
+    </div>
+  </div>
+  <div class="decode">
+    <div class="download"></div>
+    <div class="result-image"></div>
+    <div class="icon"></div>
+  </div>
+</div>

@@ -7,19 +7,19 @@
     align-items: center;
     justify-content: center;
 }
-.encode, .decode, .video {
+.encode, .decode, .video, .encode-image {
     height: 200px;
     display: grid;
     grid-template-columns: 200px auto 200px;
 }
-.video {
+.video, .encode-image {
     height: auto;
     display: grid;
     grid-template-columns: 250px 250px 250px;
     gap: 10px;
     grid-template-rows: 250px auto;
 }
-.decode-video {
+.decode-video, .decode-image {
     grid-template-columns: 250px 250px;
 }
 .encode:last-child, .decode:last-child {
@@ -27,7 +27,8 @@
 }
 .encode label, .encode .send, .encode .download, .encode .icon,
 .decode label, .decode .send, .decode .download, .decode .icon,
-.video label, .video .send {
+.video label, .video .send,
+.encode-image label, .encode-image .send {
     /* height: 200px; */
     background-image: url('/img/image.png');
     background-color: #36444b;
@@ -39,17 +40,21 @@
     background-repeat: no-repeat;
     position: relative;
 }
+.encode-image label {
+    background-size: 80% 80%;
+}
 .video label:first-child {
     background-image: url('/img/video.png');
     background-size: 80% 80%;
     position: relative;
 }
-.video label:last-child {
+.video label:last-child, .encode-image label:last-child {
     grid-column: 1 / span 3;
     display: none;
     height: 300px;
+    background-size: contain;
 }
-.video label:last-child img{
+.video label:last-child img, .encode-image label:last-child img{
     object-fit: contain;
 }
 .video video {
@@ -83,7 +88,7 @@
 .video label button:active {
     transform: scale(0.97);
 }
-.video img {
+.video img, .encode-image img {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -92,7 +97,8 @@
 }
 .encode label:active, .encode .send:active, .encode .download:active,
 .decode label:active, .decode .send:active, .decode .download:active,
-.video label:active, .video .send:active {
+.video label:active, .video .send:active,
+.encode-image label:active, .encode-image .send:active {
     background-size: 90% 90%;
 }
 .encode .download::after,
@@ -103,7 +109,7 @@
     margin: auto;
     border-radius: 5px;
 }
-.encode .send, .decode .send, .video .send  {
+.encode .send, .decode .send, .video .send, .encode-image .send  {
     background-image: url('/img/send.png');
     background-size: 80% 80%;
     background-repeat: no-repeat;
@@ -121,10 +127,10 @@
     border: 20px solid #36444b;
     background-size: cover;
 }
-.encode label input, .decode label input, .video label input {
+.encode label input, .decode label input, .video label input, .encode-image label input {
     display: none;
 }
-.encode span, .decode span, .video span  {
+.encode span, .decode span, .video span, .encode-image span  {
     padding: 5px;
     background-color: #ffffffbf;
     margin: auto;

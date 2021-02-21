@@ -134,6 +134,7 @@ steg.retrieveImage = (file) => {
             resolve({ status: "success", url: file.filename + ".png" })
             fs.unlinkSync('./imagesToBeDecoded/' + file.filename)
         } catch (error) {
+            console.log(error)
             resolve({ status: "failed", msg: "image has no hidden data" })
         }
 

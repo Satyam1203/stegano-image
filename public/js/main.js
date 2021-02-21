@@ -38,6 +38,11 @@ let createCard = (type, value, typeOfCard) => {
 
 let filesToBesteganographed = []
 let messageFromImageFiles = []
+let messageTOImageFiles = []
+
+let imageTOImageFiles = {}
+let imageFromImageFiles 
+
 
 const delay = (type, file) => {
     return new Promise((resolve, reject) => {
@@ -52,7 +57,7 @@ const delay = (type, file) => {
                 let selectedImages
                 if (type == 'decode') {
                     selectedImages = document.querySelector(".decode .selectedImages")
-                } else {
+                } else if (type == 'encode') {
                     selectedImages = document.querySelector(".encode .selectedImages")
                 }
                 let imgWrap = createCard("file", file, type)
@@ -75,31 +80,50 @@ const handleChange = async (type, e, image) => {
     //         return;
     //     }
     // }
-    let selectedImages
+    let selectedImages, cursor
     if (type == 'decode') {
         selectedImages = document.querySelector(".decode .selectedImages")
         messageFromImageFiles.push(...e.target.files)
-    } else {
+    } else if (type == 'encode') {
         selectedImages = document.querySelector(".encode .selectedImages")
-        filesToBesteganographed.push(...e.target.files)
+        messageTOImageFiles.push(...e.target.files)
+    } else if (type == 'encode-image') {
+        if(image == 1) {
+            imageTOImageFiles[1] = e.target.files[0]
+            let img = document.querySelectorAll('.encode-image label img')[0]
+            img.src = URL.createObjectURL(e.target.files[0])
+        } else {
+            imageTOImageFiles[2] = e.target.files[0]
+            let img = document.querySelectorAll('.encode-image label img')[1]
+            img.src = URL.createObjectURL(e.target.files[0])
+        }
+        
+    } else {
+        imageFromImageFiles = e.target.files[0]
+        console.log(imageFromImageFiles, e.target.files[0])
+        let img = document.querySelector('.decode-image label img')
+        img.src = URL.createObjectURL(e.target.files[0])
     }
-    let cursor = selectedImages.scrollLeft
-   
+    if (selectedImages)
+        cursor = selectedImages.scrollLeft
 
-    for (let file of e.target.files)
-        await delay(type, file)
+    if (type == 'encode' || type == 'decode')
+        for (let file of e.target.files)
+            await delay(type, file)
 
-    setTimeout(() => {
-        selectedImages.scrollTo(0, 0)
-        if (cursor)
-            selectedImages.scrollTo(cursor, 0)
-    }, 400);
+    if (type == 'encode' || type == 'decode') {
+        setTimeout(() => {
+            selectedImages.scrollTo(0, 0)
+            if (cursor)
+                selectedImages.scrollTo(cursor, 0)
+        }, 400);
+    }
 
 }
 
 const send = (type, e) => {
-    if ((type == 'encode' && !filesToBesteganographed.length) ||
-    (type == 'decode' && !messageFromImageFiles.length)) {
+    if ((type == 'encode' && !messageTOImageFiles.length) ||
+        (type == 'decode' && !messageFromImageFiles.length)) {
         alert("No image is selected")
         return
     }
@@ -113,7 +137,7 @@ const send = (type, e) => {
             .forEach(msg => messages.push(msg.value))
 
         formData.append("messages", messages)
-        filesToBesteganographed.map(file => {
+        messageTOImageFiles.map(file => {
             formData.append("files", file)
         })
     } else {
@@ -122,7 +146,7 @@ const send = (type, e) => {
         })
     }
 
-    
+
 
     axios({
         method: "POST",
@@ -174,10 +198,13 @@ const sendImage = (type, e, decodeImage) => {
     let loading = document.querySelector('#loading')
     loading.style.display = "flex"
     let formData = new FormData()
-
-    filesToBesteganographed.map(file => {
-        formData.append("files", file)
-    })
+    if (type == 'encode') {
+        formData.append("files", imageTOImageFiles[1])
+        formData.append("files", imageTOImageFiles[2])
+    } else {
+        formData.append("files", imageFromImageFiles)
+        console.log(imageFromImageFiles)
+    }
 
     axios({
         method: "POST",
@@ -195,15 +222,15 @@ const sendImage = (type, e, decodeImage) => {
         result.data.map(result => {
             if (result.status == "success") {
                 if (type == "encode") {
-                    let imgWrap = createCard("src", result.url)
-                    selectedImages.append(imgWrap)
-                } else if (decodeImage) {
-                    let imgWrap = createCard("src", result.url)
-                    selectedImages.append(imgWrap)
+                    // let imgWrap = createCard("src", result.url)
+                    // selectedImages.append(imgWrap)
+                    let img = document.querySelectorAll('.encode-image img')[2]
+                    img.parentElement.style.display = "flex"
+                    img.setAttribute('src', result.url)
                 } else {
-                    let p = document.createElement('p')
-                    p.textContent = value
-                    selectedImages.append(p)
+                    let img = document.querySelectorAll('.decode-image img')[1]
+                    img.parentElement.style.display = "flex"
+                    img.setAttribute('src', result.url)
                 }
             } else {
                 alert(result.msg)

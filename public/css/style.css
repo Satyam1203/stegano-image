@@ -1,0 +1,51 @@
+.wrap {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 350px auto;
+}
+.sidePanel {
+  height: 100vh;
+  overflow: hidden;
+  overflow-y: auto;
+  background-color: purple;
+  background-image: url("/img/bg.jpg");
+  background-size: cover;
+}
+.sidePanel .title {
+  text-align: center;
+  color: white;
+  font-family: sans-serif;
+  margin-bottom: 200px;
+}
+.sidePanel .active {
+  border: 2px solid white;
+}
+.list {
+  padding: 10px;
+  color: white;
+  background-color: #00000038;
+  margin: 5px;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.list:hover {
+  border: 2px solid white;
+}
+.list:active {
+  transform: scale(0.96);
+}
+.mainContent {
+  height: 100vh;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+.contentWrap h1 {
+  text-align: center;
+}

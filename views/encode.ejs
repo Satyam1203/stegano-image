@@ -1,0 +1,22 @@
+<div class="contentWrap">
+    <h1>TEXT TO IMAGE</h2>
+    <div id="loading">
+        <img src="/img/loading.gif">
+        <p>Loading</p>
+    </div>
+    <div class="encode">
+        <label>
+            <span>Insert image</span>
+            <input type="file" onChange="handleChange('encode', event)" multiple accept="image/*" />
+        </label>
+        <div class="selectedImages"></div>
+        <div class="send" onclick="send('encode', event)">
+            <span>Encode image</span>
+        </div>
+    </div>
+    <div class="encode">
+        <div class="download" onclick="downloadAll()"></div>
+        <div class="result"></div>
+        <div class="icon"></div>
+    </div>
+</div>

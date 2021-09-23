@@ -1,0 +1,25 @@
+<div class="contentWrap">
+    <h1>IMAGE TO IMAGE</h2>
+        <div id="loading">
+            <img src="/img/loading.gif">
+            <p>Loading</p>
+        </div>
+        <div class="encode-image">
+            <label>
+                <span>Insert Image 1</span>
+                <input type="file" onChange="handleChange('encode-image', event, 1)" accept="image/*" />
+                <img />
+            </label>
+            <label>
+                <span>Insert image 2</span>
+                <input type="file" onChange="handleChange('encode-image', event, 2)" accept="image/*" />
+                <img />
+            </label>
+            <div class="send" onclick="sendImage('encode', event)">
+                <span>Encode image</span>
+            </div>
+            <label>
+                <img />
+            </label>
+        </div>
+</div>

@@ -43,6 +43,7 @@ steg.hideImage = (file1, file2) => {
 
         // TODO: Handle image sizing issues from backend instead of frontend. (REJECT IF data1.length < data2.length + 4)
         if (data1.length < data2.length + 4) {
+            console.log(data1.length, "\n", data2.length)
             resolve({ status: 'failed', msg: "The image you want to hide should be smaller in size" })
             return
         }

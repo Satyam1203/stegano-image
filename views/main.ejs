@@ -4,13 +4,18 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/css/ejs.css" />
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
     <script src="/dist/axios.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Steganography</title>
   </head>
   <body>
+    <div class="header">
+      <div class="openMenu menuBtn"></div>
+    </div>
     <div class="wrap">
       <div class="sidePanel">
+        <!-- <div class="closeMenu menuBtn"></div> -->
         <h1 class="title">Steganograph</h1>
         <div onclick="route(this, 0)" class="list active">Text to Image</div>
         <div onclick="route(this, 1)" class="list">Text from Image</div>
@@ -28,6 +33,7 @@
         <div class="content"><%- include('decode-video.ejs'); %></div>
       </div>
     </div>
+    <script src="/js/menu.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/video.js"></script>
   </body>

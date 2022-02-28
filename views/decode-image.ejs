@@ -1,20 +1,24 @@
-<div class="contentWrap">
-    <h1>IMAGE TO IMAGE</h2>
-        <div id="loading">
-            <img src="/img/loading.gif">
-            <p>Loading</p>
-        </div>
-        <div class="encode-image decode-image">
-            <label>
-                <span>Insert Video</span>
-                <input type="file" onChange="handleChange('decode-image', event, 1)" accept="image/*" />
-                <img />
-            </label>
-            <div class="send" onclick="sendImage('decode', event)">
-                <span>Decode image</span>
-            </div>
-            <label>
-                <img />
-            </label>
-        </div>
+<div class="contentWrap imgToImg">
+  <h1>IMAGE FROM IMAGE</h1>
+  <div class="encode-image decode-image">
+    <label>
+      <span>Insert Video</span>
+      <input
+        type="file"
+        onChange="handleChange('decode-image', event, 1)"
+        accept="image/*"
+      />
+      <img />
+    </label>
+    <div class="send" onclick="sendImage('decode', event)">
+      <span>Decode image</span>
+    </div>
+    <label>
+      <img />
+    </label>
+  </div>
+  <div id="loading">
+    <img src="/img/loading.gif" />
+    <p>Loading</p>
+  </div>
 </div>

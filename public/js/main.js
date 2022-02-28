@@ -215,9 +215,9 @@ const sendImage = (type, e, decodeImage) => {
         }
     }).then(result => {
         console.log(result)
-        let selectedImages = document.querySelector(".result")
-        while (selectedImages.lastChild)
-            selectedImages.removeChild(selectedImages.lastChild)
+        // let selectedImages = document.querySelector(".result")
+        // while (selectedImages.lastChild)
+        //     selectedImages.removeChild(selectedImages.lastChild)
 
         result.data.map(result => {
             if (result.status == "success") {
@@ -263,6 +263,7 @@ downloadAll = () => {
 }
 
 route = (ths, page) => {
+    openCLoseMenu()
     let lists = document.querySelectorAll('.list')
     lists.forEach(ele => {
         ele.classList.remove('active')

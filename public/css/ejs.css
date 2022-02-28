@@ -11,6 +11,7 @@
     height: 200px;
     display: grid;
     grid-template-columns: 200px auto 200px;
+    margin-top: 10px;
 }
 .video, .encode-image {
     height: auto;
@@ -39,6 +40,7 @@
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
+    background-size: 90%;
 }
 .encode-image label {
     background-size: 80% 80%;
@@ -94,6 +96,8 @@
     height: 100%;
     object-fit: cover;
     border: 10px solid #3195c6;
+} .decode-image label:last-child, .decode-video label:last-child {
+    grid-column: 1 / span 2;
 }
 .encode label:active, .encode .send:active, .encode .download:active,
 .decode label:active, .decode .send:active, .decode .download:active,

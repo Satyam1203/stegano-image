@@ -54,8 +54,10 @@ function sendVideo(type) {
     if (type == 'encode') {
         formData.append("files", files.video)
         formData.append("files", files.image)
+        formData.append("userId", userId)
     } else {
         formData.append("files", files['decode-video'])
+        formData.append("userId", userId)
     }
 
     var instance = axios.create({
@@ -74,21 +76,6 @@ function sendVideo(type) {
         }
     }).then(result => {
         console.log(result)
-        if (result.data[0].status == 'video') {
-            let video = document.querySelector('.video .result')
-            let label = document.querySelectorAll('.video label')[2]
-            label.style.display = "flex"
-            video.src = result.data[0].url
-            video.style.display = "block"
-        } else if (result.data[0].status == 'failed') {
-            alert(result.data[0].msg)
-            loading.style.display = "none"
-        } else {
-            let img = document.querySelector('.decode-video label img')
-            img.src = result.data[0].url
-            img.parentElement.style.display = 'flex'
-        }
-        loading.style.display = "none"
     }).catch((err, msg) => {
         alert("something went wrong")
         loading.style.display = "none"

@@ -65,8 +65,8 @@ router.post('/steg-decode', imagesToBeDecoded.array("files"), (req, res) => {
 
 router.post('/steg-encode-video', videosToBeEncoded.array('files'), (req, res) => {
     let promises = []
-    console.log(req.files);
-    promises.push(steg.encodeVideo(req.files[0], req.files[1]));
+    console.log(req.files, "\n user-id", req.body.userId);
+    promises.push(steg.encodeVideo(req.files[0], req.files[1], req.io, req.body.userId));
     Promise.all(promises).then(result => {
             console.log(result)
             res.send(result)

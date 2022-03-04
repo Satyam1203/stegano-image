@@ -110,14 +110,17 @@ const extractImage = async (frame, count, path, fileName) => {
     return { status: 'failed', msg: 'image has no hidden data' }
   }
 }
-const encodeVideo = (video, image) => {
+const encodeVideo = (video, image, io, userId) => {
   return new Promise(async (resolve, reject) => {
     const path = uuidV4()
     try {
+      resolve({status: "file received", msg: "file received"})
+      io.emit(userId, {status: 'progress', msg: "file received"})
       // console.log(image)
       // console.log('yu', video)
       let extractedImage
       console.log('initialization')
+      io.emit(userId, {status: 'progress', msg: "initialization"})
 
       if(!fs.existsSync(`frames`)) await fs.mkdir(`frames`)
       await fs.mkdir(`frames/${path}`)
@@ -126,6 +129,7 @@ const encodeVideo = (video, image) => {
       // await fs.mkdir(`frames/processed-frames/${path}`)
 
       console.log('decoding')
+      io.emit(userId, {status: 'progress', msg: "decoding"})
 
       let t1 = Date.now()
 
@@ -136,8 +140,10 @@ const encodeVideo = (video, image) => {
       let t2 = Date.now()
 
       console.log((t2 - t1) / (1000 * 60), 'minutes')
+      io.emit(userId, {status: 'progress', msg: (t2 - t1) / (1000 * 60) + ' minutes'})
 
       console.log('rendering')
+      io.emit(userId, {status: 'progress', msg: "rendering"})
 
       // const frames = fs.readdirSync(`frames/${path}/raw-frames`)
 
@@ -167,8 +173,10 @@ const encodeVideo = (video, image) => {
       // }
       t1 = Date.now()
       console.log((t1 - t2) / (1000 * 60), 'minutes')
+      io.emit(userId, {status: 'progress', msg: (t1 - t2) / (1000 * 60) + ' minutes'})
       if (image) {
         console.log('encoding')
+        io.emit(userId, {status: 'progress', msg: "encoding"})
 
         // await exec(`ffmpeg -start_number 1 -i frames/${path}/raw-frames/%d.png -vcodec ${videoEncoder} -profile:v high444 -refs 1 -crf 0 -preset ultrafast frames/${path}/${video.filename}`)
         await exec(
@@ -181,34 +189,44 @@ const encodeVideo = (video, image) => {
 
         t2 = Date.now()
         console.log((t2 - t1) / (1000 * 60), 'minutes')
+        io.emit(userId, {status: 'progress', msg: (t2 - t1) / (1000 * 60) + ' minutes'})
 
         console.log('Adding Audio')
-        await exec(
+        io.emit(userId, {status: 'progress', msg: "Adding Audio"})
+      await exec(
           `ffmpeg -i frames/${path}/${video.filename} -i videosToBeEncoded/${video.filename} -c copy -map 0:v:0 -map 1:a:0 videosAfterEncoding/${dimensions + video.filename}`,
         )
 
         t1 = Date.now()
         console.log((t1 - t2) / (1000 * 60), 'minutes')
+        io.emit(userId, {status: 'progress', msg: (t1 - t2) / (1000 * 60) + ' minutes'})
 
         console.log('done')
+        io.emit(userId, {status: 'progress', msg: "Done"})
+        io.emit(userId, {status: 'video_URL', URL: dimensions + video.filename, dimensions: dimensions})
 
         fs.removeSync(`frames/${path}`)
         fs.unlinkSync(`videosToBeEncoded/${video.filename}`)
         fs.unlinkSync(`videosToBeEncoded/${image.filename}`)
-        resolve({ status: 'video', url: dimensions + video.filename, dimensions: dimensions})
+
+        // resolve({ status: 'video', url: dimensions + video.filename, dimensions: dimensions})
       } else {
         console.log('done')
+        io.emit(userId, {status: 'progress', msg: "done"})
+        io.emit(userId, {status: 'image_URL', URL: path + 1 + '.png'})
 
         fs.removeSync(`frames/${path}`)
         fs.unlinkSync(`videosToBeEncoded/${video.filename}`)
-        resolve({ status: 'image', url: path + 1 + '.png'})
+        // resolve({ status: 'image', url: path + 1 + '.png'})
       }
     } catch (err) {
       console.log(err)
+      io.emit(userId, {status: 'failed', msg: err})
+
       fs.removeSync(`frames/${path}`)
       if (video) fs.unlinkSync(`videosToBeEncoded/${video.filename}`)
       if (image) fs.unlinkSync(`videosToBeEncoded/${image.filename}`)
-      resolve({ status: 'failed', msg: "server error" })
+      // resolve({ status: 'failed', msg: "server error" })
     }
   })
 }

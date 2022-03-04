@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
+
 * {
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
 .content {
     height: 100vh;
@@ -195,17 +198,19 @@
     align-items: center;
     justify-content: center;
     z-index: 100;
-    background: #ffffff5e;
+    background: #000000b0;
     backdrop-filter: blur(5px);
+    flex-direction: column;
 }
-
-#loading p {
-    font-size: 26px;
-    font-weight: bold;
+#loading img {
+    margin: -60px;
+}
+#loading pre {
+    text-align: center;
+    font-size: 16px;
     padding: 6px 10px;
-    background: darkcyan;
     color: white;
-    border-radius: 5px;
+    border: none;
 }
 
 @media only screen and (max-width: 600px) {

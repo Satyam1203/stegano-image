@@ -205,12 +205,18 @@
 #loading img {
     margin: -60px;
 }
-#loading pre {
+#loading div {
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     padding: 6px 10px;
     color: white;
+    font-weight: 200;
+}
+#loading p {
+    width: auto;
+    margin: 0;
     border: none;
+    padding: 0;
 }
 
 @media only screen and (max-width: 600px) {

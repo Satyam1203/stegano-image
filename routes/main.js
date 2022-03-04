@@ -4,6 +4,14 @@ const multer = require('multer')
 const { v4: uuidV4 } = require('uuid')
 const imagesToBeEncoded = multer({ dest: 'imagesToBeEncoded/' })
 const imagesToBeDecoded = multer({ dest: 'imagesToBeDecoded/' })
+const fs = require('fs-extra')
+
+const checkForFolders = async (req, res, next)=> {
+    if(!fs.existsSync(`videosToBeEncoded`)) await fs.mkdir(`videosToBeEncoded`)
+    if(!fs.existsSync(`videosToBeDecoded`)) await fs.mkdir(`videosToBeDecoded`)
+    if(!fs.existsSync(`videosAfterEncoding`)) await fs.mkdir(`videosAfterEncoding`)
+    next()
+}
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -63,7 +71,7 @@ router.post('/steg-decode', imagesToBeDecoded.array("files"), (req, res) => {
     })
 })
 
-router.post('/steg-encode-video', videosToBeEncoded.array('files'), (req, res) => {
+router.post('/steg-encode-video', checkForFolders, videosToBeEncoded.array('files'), (req, res) => {
     let promises = []
     console.log(req.files, "\n user-id", req.body.userId);
     promises.push(steg.encodeVideo(req.files[0], req.files[1], req.io, req.body.userId));
